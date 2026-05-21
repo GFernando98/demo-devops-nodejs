@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-devops-config
+  namespace: demo-devops
+data:
+  NODE_ENV: "production"
+  PORT: "8000"
+  DATABASE_NAME: "/app/data/dev.sqlite"
+  DATABASE_USER: "user"

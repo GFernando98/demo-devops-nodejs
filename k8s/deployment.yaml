@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-devops-nodejs
+  namespace: demo-devops
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demo-devops-nodejs
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: demo-devops-nodejs
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runasGroup: 1001
+        fsGroup: 1001
+      containers:
+        - name: demo-devops-nodejs
+          image: IMAGE_PLACEHOLDER
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: demo-devops-nodejs-config
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: demo-devops-nodejs-secret
+                  key: DATABASE_PASSWORD
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+            livenessProbe:
+              httpGet:
+                path: /health
+                port: 8000
+              initialDelaySeconds: 20
+              periodSeconds: 20
+            readinessProbe:
+              httpGet:
+                path: /health
+                port: 8000
+              initialDelaySeconds: 10
+              periodSeconds: 10
+            volumeMounts:
+              - name: sqlite-data
+                mountPath: /app/data
+      volumes:
+        - name: sqlite-data
+          persistentVolumeClaim:
+            claimName: demo-devops-nodejs-sqlite-pvc            
