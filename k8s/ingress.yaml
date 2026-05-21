@@ -7,12 +7,13 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-    - http:
+    - host: 154.38.187.15.nip.io
+      http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: demo-devops-service
+                name: demo-devops-nodejs-svc
                 port:
-                  number: 8000
+                  number: 80
