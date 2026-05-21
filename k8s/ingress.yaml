@@ -4,16 +4,16 @@ metadata:
   name: demo-devops-ingress
   namespace: demo-devops
   annotations:
-    kubernetes.io/ingress.class: "nginx"
+    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-    - host: demo-devops.local
+    - host: 154.38.187.15.nip.io
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: demo-devops-service
+                name: demo-devops-nodejs-svc
                 port:
-                  number: 8000
+                  number: 80
