@@ -1,0 +1,6 @@
+node_modules
+.env
+*.sqlite
+coverage
+.github
+k8s
