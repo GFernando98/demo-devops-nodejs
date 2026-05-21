@@ -69,7 +69,7 @@ jobs:
           image-ref: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           format: "table"
           exit-code: "0"
-          severity: "CRITICAL, HIGH"
+          severity: "CRITICAL,HIGH"
           output: "trivy-report.txt"
   
       - name: Upload Trivy report
